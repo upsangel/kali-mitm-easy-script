@@ -6,16 +6,21 @@ if [ "$EUID" -ne 0 ]; then
   exit
 fi
 
-echo "正在從 World Time API 獲取時間..."
+echo "正在從 timeapi.io 獲取時間..."
 
-# 1. 使用 http 而非 https，避免系統時間偏差過大導致 SSL 憑證驗證失敗
-# 2. /api/ip.txt 會根據你的 IP 自動返回包含時區的精準時間
-TIME_DATA=$(curl -s --max-time 5 http://worldtimeapi.org/api/ip.txt | grep '^datetime:' | cut -d ' ' -f 2)
+# 根據 HackMD 文章的建議使用 timeapi.io
+# 由於系統時間可能極度不準，導致 https 憑證失效，必須加上 -k (insecure) 忽略驗證
+# 時區可以依照你的需求設定為 Asia/Hong_Kong 或 Asia/Taipei (皆為 +8)
+URL="https://timeapi.io/api/time/current/zone?timeZone=Asia/Hong_Kong"
+
+# 抓取資料並使用 tr 和 cut 來解析 JSON (避免系統沒安裝 jq)
+# 會從 {"dateTime":"2026-04-03T17:20:16.647", ... } 中精準抽出時間字串
+TIME_DATA=$(curl -s -k "$URL" | tr ',' '\n' | grep '"dateTime"' | cut -d '"' -f 4)
 
 if [ -n "$TIME_DATA" ]; then
     echo "抓取到的時間為: $TIME_DATA"
     
-    # 設定系統時間 (Linux date 可以完美識別 ISO 8601 格式，包含時區偏移)
+    # 設定系統時間 (date 指令能完美識別這個 ISO 8601 格式字串)
     date -s "$TIME_DATA" > /dev/null
     
     # 同步到硬體時鐘
@@ -23,5 +28,5 @@ if [ -n "$TIME_DATA" ]; then
     
     echo "時間同步完成！目前系統時間為: $(date)"
 else
-    echo "錯誤：無法連線至網路或抓取時間失敗。"
+    echo "錯誤：無法連線至 timeapi.io 或抓取時間失敗。"
 fi
