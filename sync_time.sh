@@ -46,32 +46,31 @@ if [ -n "$TIME_DATA" ]; then
     echo "----------------------------------------"
     
     # ==========================================
-    # 3. 安裝與設定 NTP 服務區塊
+    # 3. 安裝與設定 NTPsec 服務區塊
     # ==========================================
-    echo "正在執行 apt update 並安裝 NTP 服務 (這可能需要幾十秒)..."
+    echo "正在執行 apt update 並安裝 NTPsec 服務 (這可能需要幾十秒)..."
     
-    # 因為時間已經正確，這裡的 apt update 不會再遇到憑證過期的報錯
+    # 因為時間已經正確，這裡的 apt update 不會遇到憑證過期的報錯
     apt-get update -qq
     
-    # 安裝 ntp (在較新的 Kali 中，這通常會自動安裝 ntpsec 代替)
-    apt-get install -y ntp
+    # 改為安裝 ntpsec
+    apt-get install -y ntpsec
     
     if [ $? -eq 0 ]; then
-        echo "✅ NTP 套件安裝成功！"
+        echo "✅ NTPsec 套件安裝成功！"
         
-        # 確保 NTP 服務設定為開機啟動並立即執行
-        # 嘗試啟動 ntp 或 ntpsec (視 Kali 版本而定)
-        systemctl enable ntp 2>/dev/null || systemctl enable ntpsec 2>/dev/null
-        systemctl start ntp 2>/dev/null || systemctl start ntpsec 2>/dev/null
+        # 確保 NTPsec 服務設定為開機啟動並立即執行
+        systemctl enable ntpsec 2>/dev/null
+        systemctl start ntpsec 2>/dev/null
         
         echo "========================================"
         echo "🚀 全自動對時系統建置完畢！"
-        echo "NTP 背景服務已接管，未來將自動保持毫秒級精準對時。"
+        echo "NTPsec 背景服務已接管，未來將自動保持毫秒級精準對時。"
         echo "========================================"
     else
-        echo "❌ NTP 安裝失敗，請檢查網路連線或 apt 來源設定。"
+        echo "❌ NTPsec 安裝失敗，請檢查網路連線或 apt 來源設定。"
     fi
 
 else
-    echo "❌ 錯誤：無法連線至 timeapi.io，已中斷後續 NTP 安裝程序。"
+    echo "❌ 錯誤：無法連線至 timeapi.io，已中斷後續 NTPsec 安裝程序。"
 fi
