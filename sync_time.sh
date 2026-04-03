@@ -6,19 +6,19 @@ if [ "$EUID" -ne 0 ]; then
   exit
 fi
 
-echo "正在連線至 Google 獲取網路時間..."
+echo "正在從 World Time API 獲取時間..."
 
-# 從 Google 的 HTTP Header 抓取時間字串
-# 格式範例：Fri, 03 Apr 2026 09:00:00 GMT
-HTTP_TIME=$(curl -I --medir-time 5 http://www.google.com 2>&1 | grep -i '^date:' | cut -d' ' -f2-7)
+# 1. 使用 http 而非 https，避免系統時間偏差過大導致 SSL 憑證驗證失敗
+# 2. /api/ip.txt 會根據你的 IP 自動返回包含時區的精準時間
+TIME_DATA=$(curl -s --max-time 5 http://worldtimeapi.org/api/ip.txt | grep '^datetime:' | cut -d ' ' -f 2)
 
-if [ -n "$HTTP_TIME" ]; then
-    echo "抓取到的時間為: $HTTP_TIME"
+if [ -n "$TIME_DATA" ]; then
+    echo "抓取到的時間為: $TIME_DATA"
     
-    # 設定系統時間 (-s 為 set)
-    date -s "$HTTP_TIME" > /dev/null
+    # 設定系統時間 (Linux date 可以完美識別 ISO 8601 格式，包含時區偏移)
+    date -s "$TIME_DATA" > /dev/null
     
-    # 同步到硬體時鐘（防止重啟後跳回舊時間，視硬體支援而定）
+    # 同步到硬體時鐘
     hwclock -w
     
     echo "時間同步完成！目前系統時間為: $(date)"
