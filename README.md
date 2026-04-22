@@ -11,7 +11,7 @@ SSL MITM（Man-In-The-Middle）即「SSL 中間人攔截」。現代網絡大多
 
 ### 1. 建立 Kali Live USB with Persistence
 為了確保你的系統環境、安裝的套件與腳本設定在重啟後不會遺失，請務必製作具備 **Persistence（持續性儲存）** 功能的 Kali Linux Live USB。
-* 🎥 **教學影片參考**：[Kali Linux 開機碟製作教學 (Live USB with persistence tutorial)](https://www.youtube.com/watch?v=C79kSCVcghk)
+* 🎥 **教學影片參考**：[Kali Linux 開機碟製作教學](https://www.youtube.com/watch?v=C79kSCVcghk) / [Kali Linux USB persistence the right way](https://www.youtube.com/watch?v=Hxau-bh8gr4)
 
 ### 2. 校準系統時間 (`sync_time.sh`)
 進入 Kali 系統後，第一步請執行時間同步腳本(下載脚本請先執行 chmod +x *.sh 或其他方法賦予脚本執行權限)：
