@@ -14,9 +14,9 @@ SSL MITM（Man-In-The-Middle）即「SSL 中間人攔截」。現代網絡大多
 * 🎥 **教學影片參考**：[Kali Linux 開機碟製作教學 (Live USB with persistence tutorial)](https://www.youtube.com/watch?v=C79kSCVcghk)
 
 ### 2. 校準系統時間 (`sync_time.sh`)
-進入 Kali 系統後，第一步請執行時間同步腳本：
+進入 Kali 系統後，第一步請執行時間同步腳本(下載脚本請先執行 chmod +x *.sh 或其他方法賦予脚本執行權限)：
 ```bash
-./sync_time.sh
+sudo ./sync_time.sh
 ```
 **💡 為什麼這很重要？**
 SSL/TLS 憑證的安全機制對時間極度敏感。如果你的 Kali 系統時間不正確，偽造出來的 SSL 憑證會被客戶端設備判定為「尚未生效」或「已過期」而直接拒絕連線，導致無法成功攔截流量。
@@ -24,7 +24,7 @@ SSL/TLS 憑證的安全機制對時間極度敏感。如果你的 Kali 系統時
 ### 3. 設置透明網關 (`setup_bridge.sh`)
 接著，配置透明網關（Transparent Gateway）：
 ```bash
-./setup_bridge.sh
+sudo ./setup_bridge.sh
 ```
 此腳本會將你的 Kali 設備配置成一個網橋或路由節點。這意味著目標設備的網絡流量會在不知情的情況下，自動流經你的 Kali 系統，**完全不需要在目標設備上手動設定 Proxy**。
 
@@ -33,13 +33,13 @@ SSL/TLS 憑證的安全機制對時間極度敏感。如果你的 Kali 系統時
 
 * **開啟 MITM 攔截**：
   ```bash
-  ./Mitm_on
+  sudo ./mitm_ssl_on.sh
   ```
   這會自動配置 iptables 規則，將流經網關的 80 (HTTP) 與 443 (HTTPS) 流量劫持到代理監聽端口，並啟動 MITM PROXY 開始記錄與解析 SSL 數據。
 
 * **關閉 MITM 攔截**：
   ```bash
-  ./Mitm_off
+  sudo ./mitm_ssl_off.sh
   ```
   測試完成後，執行此腳本會清除先前的 iptables 劫持規則並關閉代理程式，讓網絡流量恢復正常直連。
 
