@@ -9,6 +9,11 @@ SSL MITM（Man-In-The-Middle）即「SSL 中間人攔截」。現代網絡大多
 
 ## 🚀 快速開始與使用步驟
 
+Youtube演示 Outlook、恆生密碼竟可100%泄漏？😯【打工仔必看】點解絕對不要在公司登入私人帳號？如何防範駭客與公司 IT 的無聲監聽！
+https://youtu.be/RPuDwU9Mt9M
+
+[![Youtube演示 Outlook、恆生密碼竟可100%泄漏？😯【打工仔必看】點解絕對不要在公司登入私人帳號？如何防範駭客與公司 IT 的無聲監聽！](https://img.youtube.com/vi/RPuDwU9Mt9M/maxresdefault.jpg)](https://youtu.be/RPuDwU9Mt9M)
+
 ### 1. 建立 Kali Live USB with Persistence
 為了確保你的系統環境、安裝的套件與腳本設定在重啟後不會遺失，請務必製作具備 **Persistence（持續性儲存）** 功能的 Kali Linux Live USB。
 * 🎥 **教學影片參考**：[Kali Linux 開機碟製作教學](https://www.youtube.com/watch?v=C79kSCVcghk) / [Kali Linux USB persistence the right way](https://www.youtube.com/watch?v=Hxau-bh8gr4)
